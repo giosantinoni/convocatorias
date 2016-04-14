@@ -2,9 +2,9 @@
     <tr>
         <td colspan="2" bgcolor="#333333" style="color:white;">
             <span style="float:right; margin-right:15px;">
-                <?php //echo $usuarioapellido; ?>, <?php //echo $usuarionombre; ?> 
-                <!--<a style="color:#B6DEF3" href='../script/session.cerrar.php'>Cerrar Sesi&oacute;n</a>                
-                <a style="color:#B6DEF3" href='cambiar_clave.php'>Cambiar clave</a>-->
+                <?php echo $usuarioapellido; ?>, <?php echo $usuarionombre; ?> 
+                <a style="color:#B6DEF3" href='../script/session.cerrar.php'> Cerrar Sesi&oacute;n</a>                
+                <a style="color:#B6DEF3" href='cambiar_clave.php'> Cambiar clave</a>
 
             </span>
         </td>    

@@ -32,7 +32,7 @@ switch ($ac) {
 
         try {
             $campos_req = array($id_organismo, $id_materia, $horas, $horario,$motivo);
-            //verificar_campos_vacios($campos_req);            
+            verificar_campos_vacios($campos_req);            
             
             $stmp = $con->prepare($sql);
             $execute = $stmp->execute(array('id_mat' => $id_materia, 'id_org' => $id_organismo,
@@ -41,30 +41,22 @@ switch ($ac) {
                 'motivo' => $motivo));
 
             echo "<script language='javascript'>";
-         
-            //echo "$('#passwordsNoMatchRegister').show();";
-            //echo "alert('La convocatoria se ha creado satisfactoriamente');";
             echo "window.location='../vistas/convocatorias.php?exito=1'";
-            
             echo "</script>";
         } catch (Exception $e) {
             echo "ERROR: " . $e->getMessage();
             echo "<script language='javascript'>";
-
-            echo "alert('Error al crear: ".$e->getMessage()."');";
-            
+            echo "window.location='../vistas/convocatorias.php?exito=2'";
             echo "</script>";
         }
 
         } else{
         	echo "<script language='javascript'>";
-            echo "alert('Deben completarse todos los campos requeridos');";
-
+            echo "window.location='../vistas/convocatorias.php?exito=2'";
             echo "</script>";
         }
 
         break;
-
 
 	}
 

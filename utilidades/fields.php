@@ -4,7 +4,7 @@ function verificar_campos_vacios($array){
 	$i=0;
     foreach($array as $campo){
         if(empty($campo)){
-            throw new Exception('Campo requerido no puede estar vacio: '. $i);
+            throw new Exception('Todos los campos son requeridos: ');
         }
 		$i++;
     }
