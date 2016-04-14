@@ -34,12 +34,15 @@ $organismo = consultarOrganismo($usuarioorganismo);
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
 		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,300">
-        <link href="css/bootstrap.min.css" rel="stylesheet" />          
+        <link href="css/bootstrap.min.css" rel="stylesheet" />     
+        <link href="css/bootstrap.css" rel="stylesheet">     
+        <link href="css/datepicker.css" rel="stylesheet">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Sistema de Gestión Convocatorias docente</title>
         <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/bootstrap-select.min.js"></script>
+         <script src="js/bootstrap-datepicker.js"></script>   
   
     </head>
 
@@ -129,34 +132,63 @@ $organismo = consultarOrganismo($usuarioorganismo);
                                                 </td>
                                               
                                             </tr>
-                                    
-                                             <tr>
-                                                <td style="width:25%">
-                                                    Motivo *                                                
-                                                </td>
-                                                <td style="width:70%">
-                                                     <input class="form-control" type="text"  name="motivo" id="motivo"  />
-                                                </td>
-                                              
-                                            </tr>
+
                                             <tr>
                                                 <td style="width:25%">
                                                     Días de Licencia                                   
                                                 </td>
                                                 <td style="width:70%">
-                                                     <input class="form-control" type="text"  name="dias" id="dias"  />
+                                                     <input class="form-control" type="text"  name="dias" id="dias" placeholder="Un valor vacio significa que la duracion es indeterminada." />
                                                 </td>
-                                                
+
                                                 <tr>
+                                    
+                                             <tr>
+                                                <td style="width:25%">
+                                                    Motivo de la Vacancia *                                                
+                                                </td>
+                                                <td style="width:70%">
+                                                     <input class="form-control" type="text"  name="motivo" id="motivo"  />
+                                                </td>
+
+                                              </tr>
+                                              
+                                                </tr>                                            
                                                     <td>
-                                                        Fecha de finalizacion
+                                                        Vancancia
                                                     </td>
                                                 
                                                     <td style="width:25%">
-                                                      <input class="date-picker-form-control" type="text" placeholder="cliquee para elegir fecha"  id="fecha_fin"/>
-                                                </td>
+                                                    <div class="input-append date" id="fehca_inicio_vac" data-date-format="dd-mm-yyyy">
+                                                      <input class="form-control" size="16" type="text" placeholder="Inicio">
+                                                      <span class="add-on"><i class="icon-th"></i></span>
+                                                    </div>  
+                                                   
+                                                    <div class="input-append date" id="fehca_fin_vac" data-date-format="dd-mm-yyyy">
+                                                      <input class="form-control" size="16" type="text" placeholder="Fin">
+                                                      <span class="add-on"><i class="icon-th"></i></span>
+                                                    </div>  
+                                                    </td>
                                                 </tr>
-                                            </tr>
+
+                                                </tr>                                            
+                                                    <td>
+                                                        Inscripción
+                                                    </td>
+                                                
+                                                    <td style="width:25%">
+                                                    <div class="input-append date" id="fehca_inicio_insc" data-date-format="dd-mm-yyyy">
+                                                      <input class="form-control" size="16" type="text" placeholder="Inicio">
+                                                      <span class="add-on"><i class="icon-th"></i></span>
+                                                    </div>  
+                                                   
+                                                    <div class="input-append date" id="fehca_fin_insc" data-date-format="dd-mm-yyyy">
+                                                      <input class="form-control" size="16" type="text" placeholder="Fin">
+                                                      <span class="add-on"><i class="icon-th"></i></span>
+                                                    </div>  
+                                                    </td>
+                                                </tr>  
+                                            
                                      </table>
                                         <div style="text-align: center">
                                         <button type="submit" class="btn btn-default" style="background:#efefee; color:#777; margin-top: 20px;" 
@@ -187,6 +219,9 @@ $organismo = consultarOrganismo($usuarioorganismo);
                     </body>   
                     </html>
                     <script >
+
+                        $('#fehca_fin_vac').datepicker();
+                        $('#fehca_inicio_vac').datepicker();
                     
                         function cancelar() {
                             window.location = 'convocatorias.php';

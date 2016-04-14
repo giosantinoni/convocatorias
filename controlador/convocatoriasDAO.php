@@ -94,4 +94,19 @@ function consultarOrganismo($id_organismo){
     }
 }
 
+function obtenerConvotorias($estado, $id_organismo){
+	try {
+        $conn = conex::con();
+		
+			$sql = $conn->prepare('SELECT convocatoria.id, materia.descripcion as mat, organismo.nombre as org, convocatoria.horas, convocatoria.caracter_cargo, convocatoria.horario, convocatoria.dias_duracion_lic, convocatoria.motivo, convocatoria.fecha_inicio_vac, convocatoria.fecha_fin_vac, convocatoria.fecha_inicio_ins, convocatoria.fecha_fin_ins FROM convocatoria, organismo, materia WHERE estado =:est AND organismo.id =:id_organismo
+				AND convocatoria.id_organismo = organismo.id AND convocatoria.id_materia = materia.id');
+			$sql->execute(array('est'=>$estado, 'id_organismo' => $id_organismo));
+			
+			return $sql->fetchAll();
+		
+    } catch (PDOException $e){
+        echo "ERROR: " . $e->getMessage();
+    }
+}
+
 ?>

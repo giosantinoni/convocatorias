@@ -3,7 +3,8 @@
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Convocatorias
             <span class="caret"></span></a>
         <ul class="dropdown-menu">
-            <li><a href="convocatorias.php">Nueva convocatoria</a></li>            
+            <li><a href="convocatorias.php">Nueva convocatoria</a></li>   
+            <li><a href="convocatorias_abiertas.php">Convocatorias Abiertas</a></li>           
             <!--<li><a href="cambiar_clave.php">Cambiar clave</a></li>                    -->
         </ul>
     </li> 		
