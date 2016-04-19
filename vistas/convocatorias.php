@@ -89,7 +89,7 @@ $organismo = consultarOrganismo($usuarioorganismo);
                                                 </td>
                                                 <td style="width:70%">
                                                     <input type="hidden" name="id_organismo" value="<?php echo $organismo[0]['id'] ?>" />
-                                                    <input class="form-control" type="text" name="id_org" id="id_org" disabled="true" value="<?php echo $organismo[0]['nombre'] .' - '. $organismo[0]['nivel']?>" />
+                                                    <input class="form-control" type="text" name="id_org" id="id_org" disabled="true" value="<?php echo $organismo[0]['nombre'] .' - '. $organismo[0]['descripcion']?>" />
                                                 </td>
                                               
                                             </tr>
@@ -107,6 +107,22 @@ $organismo = consultarOrganismo($usuarioorganismo);
                                                                 <?php echo $mat['descripcion'];?></option>
 
                                                             <?php }?>
+                                                        
+                                                        
+                                                        
+                                                    </select>
+                                                </td>
+                                              
+                                            </tr>
+                                             <tr>
+                                                <td style="width:25%">
+                                                    Caracter del Cargo *                                                  
+                                                </td>
+                                                <td style="width:0%">                                                  
+                                                <select class="form-control" name="caracter" id="caracter">
+                                                        <option value="suplencia">Suplencia</option>
+                                                        <option value="interinato">Interinato</option>
+                                                         
                                                         
                                                         
                                                         
@@ -135,7 +151,7 @@ $organismo = consultarOrganismo($usuarioorganismo);
 
                                             <tr>
                                                 <td style="width:25%">
-                                                    Días de Licencia                                   
+                                                    Dias de Licencia                                   
                                                 </td>
                                                 <td style="width:70%">
                                                      <input class="form-control" type="text"  name="dias" id="dias" placeholder="Un valor vacio significa que la duracion es indeterminada." />
@@ -153,37 +169,37 @@ $organismo = consultarOrganismo($usuarioorganismo);
 
                                               </tr>
                                               
-                                                </tr>                                            
+                                                <tr>                                            
                                                     <td>
                                                         Vancancia
                                                     </td>
                                                 
                                                     <td style="width:25%">
-                                                    <div class="input-append date" id="fehca_inicio_vac" data-date-format="dd-mm-yyyy">
-                                                      <input class="form-control" size="16" type="text" placeholder="Inicio">
+                                                    <div class="input-append date" id="fecha_inicio_vac1" data-date-format="dd-mm-yyyy"style="float:left; margin-right:20px; margin-top: 10px; ">
+                                                      <input class="form-control" type="text" placeholder="Inicio" id="fecha_inicio_vac" name="fecha_inicio_vac">
                                                       <span class="add-on"><i class="icon-th"></i></span>
                                                     </div>  
                                                    
-                                                    <div class="input-append date" id="fehca_fin_vac" data-date-format="dd-mm-yyyy">
-                                                      <input class="form-control" size="16" type="text" placeholder="Fin">
+                                                    <div class="input-append date" id="fecha_fin_vac1" data-date-format="dd-mm-yyyy" style="float:left ; margin-top: 10px;" >
+                                                      <input class="form-control" type="text" placeholder="Fin" id="fecha_fin_vac">
                                                       <span class="add-on"><i class="icon-th"></i></span>
-                                                    </div>  
+                                                    </div>
                                                     </td>
                                                 </tr>
 
-                                                </tr>                                            
+                                                <tr>                                            
                                                     <td>
                                                         Inscripción
                                                     </td>
                                                 
                                                     <td style="width:25%">
-                                                    <div class="input-append date" id="fehca_inicio_insc" data-date-format="dd-mm-yyyy">
-                                                      <input class="form-control" size="16" type="text" placeholder="Inicio">
+                                                    <div class="input-append date" id="fecha_inicio_insc" data-date-format="dd-mm-yyyy" style="float:left; margin-right:20px; margin-top: 10px; ">
+                                                      <input class="form-control" type="text" placeholder="Inicio">
                                                       <span class="add-on"><i class="icon-th"></i></span>
                                                     </div>  
                                                    
-                                                    <div class="input-append date" id="fehca_fin_insc" data-date-format="dd-mm-yyyy">
-                                                      <input class="form-control" size="16" type="text" placeholder="Fin">
+                                                    <div class="input-append date" id="fecha_fin_insc" data-date-format="dd-mm-yyyy" style="float:left; margin-right:20px; margin-top: 10px; ">
+                                                      <input class="form-control" type="text" placeholder="Fin">
                                                       <span class="add-on"><i class="icon-th"></i></span>
                                                     </div>  
                                                     </td>
@@ -220,8 +236,10 @@ $organismo = consultarOrganismo($usuarioorganismo);
                     </html>
                     <script >
 
-                        $('#fehca_fin_vac').datepicker();
-                        $('#fehca_inicio_vac').datepicker();
+                        $('#fecha_fin_vac').datepicker();
+                        $('#fecha_inicio_vac').datepicker();
+                         $('#fecha_fin_insc').datepicker();
+                        $('#fecha_inicio_insc').datepicker();
                     
                         function cancelar() {
                             window.location = 'convocatorias.php';

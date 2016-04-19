@@ -22,32 +22,40 @@ switch ($ac) {
         $id_materia = $_POST["materia"];
         $horas = $_POST["horas"];
         $horario = $_POST["horario"];
-        $motivo = $_POST["motivo"];  
+        $motivo = $_POST["motivo"];
+        $caracter_cargo = $_POST["caracter"];  
+        $fecha_inicio_vac = $_POST["fecha_inicio_vac"];
+        $fecha_fin_vac = $_POST["fecha_fin_vac"];
+        $fecha_inicio_insc = $_POST["fecha_inicio_insc"];
+        $fecha_fin_insc = $_POST["fecha_fin_insc"];       
        // $motivo = "ALgun motivo";     
         
 		
 
-        $sql = "INSERT INTO convocatoria(id_materia, id_organismo, horas, horario, motivo)" .
-                "values (:id_mat, :id_org, :horas, :horario, :motivo)";
+        $sql = "INSERT INTO convocatoria(id_materia, id_organismo, horas, horario, motivo, catacter_cargo, fecha_inicio_vac,fecha_fin_vac, fecha_inicio_insc,fecha_fin_insc)" .
+                "values (:id_mat, :id_org, :horas, :horario, :motivo, :catacter_cargo, :fecha_inicio_vac, :fecha_fin_vac, :fecha_inicio_insc, :fecha_fin_insc)";
 
         try {
-            $campos_req = array($id_organismo, $id_materia, $horas, $horario,$motivo);
+            $campos_req = array($id_organismo, $id_materia, $horas, $horario,$motivo, $fecha_inicio_insc, $fecha_fin_insc, $fecha_inicio_vac);
             verificar_campos_vacios($campos_req);            
             
             $stmp = $con->prepare($sql);
             $execute = $stmp->execute(array('id_mat' => $id_materia, 'id_org' => $id_organismo,
                 'horas' => $horas,
                 'horario' => $horario,
-                'motivo' => $motivo));
+                'motivo' => $motivo,
+                'caracter_cargo' => $caracter_cargo,
+                'fecha_inicio_vac'=>$fecha_inicio_vac,
+                'fecha_fin_vac' => $fecha_fin_vac,
+                'fecha_inicio_insc' => $fecha_inicio_insc,
+                'fecha_fin_insc' => $fecha_fin_insc));
 
             echo "<script language='javascript'>";
             echo "window.location='../vistas/convocatorias.php?exito=1'";
             echo "</script>";
         } catch (Exception $e) {
             echo "ERROR: " . $e->getMessage();
-            echo "<script language='javascript'>";
-            echo "window.location='../vistas/convocatorias.php?exito=2'";
-            echo "</script>";
+            
         }
 
         } else{
@@ -84,7 +92,9 @@ function consultarOrganismo($id_organismo){
 	try {
         $conn = conex::con();
 		
-			$sql = $conn->prepare('SELECT * FROM organismo WHERE  id =:id');
+			$sql = $conn->prepare('SELECT organismo.nombre, nivel.descripcion FROM organismo, nivel 
+			 WHERE  organismo.id = :id AND 
+			 organismo.id_nivel = nivel.id');
 			$sql->execute(array('id'=>$id_organismo));
 			
 			return $sql->fetchAll();
@@ -98,7 +108,7 @@ function obtenerConvotorias($estado, $id_organismo){
 	try {
         $conn = conex::con();
 		
-			$sql = $conn->prepare('SELECT convocatoria.id, materia.descripcion as mat, organismo.nombre as org, convocatoria.horas, convocatoria.caracter_cargo, convocatoria.horario, convocatoria.dias_duracion_lic, convocatoria.motivo, convocatoria.fecha_inicio_vac, convocatoria.fecha_fin_vac, convocatoria.fecha_inicio_ins, convocatoria.fecha_fin_ins FROM convocatoria, organismo, materia WHERE estado =:est AND organismo.id =:id_organismo
+			$sql = $conn->prepare('SELECT convocatoria.id, materia.descripcion as mat, materia.id as id_mat, organismo.nombre as org, organismo.id as id_org, convocatoria.horas, convocatoria.caracter_cargo, convocatoria.horario, convocatoria.dias_duracion_lic, convocatoria.motivo, convocatoria.fecha_inicio_vac, convocatoria.fecha_fin_vac, convocatoria.fecha_inicio_ins, convocatoria.fecha_fin_ins FROM convocatoria, organismo, materia WHERE estado =:est AND organismo.id =:id_organismo
 				AND convocatoria.id_organismo = organismo.id AND convocatoria.id_materia = materia.id');
 			$sql->execute(array('est'=>$estado, 'id_organismo' => $id_organismo));
 			
@@ -108,5 +118,68 @@ function obtenerConvotorias($estado, $id_organismo){
         echo "ERROR: " . $e->getMessage();
     }
 }
+
+function obtenerOrdenMerito($id_organismo, $id_materia){
+	try {
+        $conn = conex::con();
+		
+			$sql = $conn->prepare('SELECT docente.id as id_doc, docente.nombre, docente.apellido, docente.dni, docente.email, lom.puntaje
+						from docente, lom
+						where docente.id = lom.id_docente
+						and lom.id_materia =:id_materia
+						and lom.id_nivel = (select organismo.id_nivel from organismo where
+						organismo.id = :id_organismo)
+						order by lom.puntaje desc');
+			$sql->execute(array('id_materia'=>$id_materia, 'id_organismo' => $id_organismo));
+			
+			return $sql->fetchAll();
+		
+    } catch (PDOException $e){
+        echo "ERROR: " . $e->getMessage();
+    }
+}
+
+function consultarDocenteInscripto($id_doc, $id_conv){
+	try {
+        $conn = conex::con();
+		
+			$sql = $conn->prepare('SELECT convocatoria_docente.id_docente as id_doc
+						from convocatoria_docente
+						where convocatoria_docente.id_docente = :id_doc
+						and convocatoria_docente.id_convocatoria = :id_conv');
+			$sql->execute(array('id_doc'=>$id_doc, 'id_conv' => $id_conv));
+			
+			if(empty($sql->fetchAll())){
+				return false;
+			}
+			return true;
+		
+    } catch (PDOException $e){
+        echo "ERROR: " . $e->getMessage();
+    }
+}
+
+
+/*function inscribirDocente($id_doc, $id_conv){
+
+	$sql = "INSERT INTO convocatoria_docente(id_docente, id_convocatoria, fecha_insc)" .
+                "values (:id_doc, :id_conv, :fecha_insc)";
+        try { 
+        	$con = conex::con();           
+            $stmp = $con->prepare($sql);
+            date_default_timezone_set('Argentina/Buenos Aires');
+            $hoy = date('Y-m-d H:i:s');
+            $execute = $stmp->execute(array('id_doc' => $id_doc, 'id_conv' => $id_conv, 'fecha_insc' => $hoy));
+            $con = null;
+            echo "<script language='javascript'>";
+            echo "window.location='../vistas/convocatorias_abiertas.php'";
+            echo "</script>";
+        } catch (Exception $e) {
+            echo "ERROR: " . $e->getMessage();
+            echo "<script language='javascript'>";
+            echo "window.location='../vistas/convocatorias_abiertas.php'";
+            echo "</script>";
+        }
+}*/
 
 ?>
