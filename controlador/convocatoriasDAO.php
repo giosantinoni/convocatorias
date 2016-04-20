@@ -26,17 +26,15 @@ switch ($ac) {
         $caracter_cargo = $_POST["caracter"];  
         $fecha_inicio_vac = $_POST["fecha_inicio_vac"];
         $fecha_fin_vac = $_POST["fecha_fin_vac"];
-        $fecha_inicio_insc = $_POST["fecha_inicio_insc"];
-        $fecha_fin_insc = $_POST["fecha_fin_insc"];       
-       // $motivo = "ALgun motivo";     
+       
         
 		
 
-        $sql = "INSERT INTO convocatoria(id_materia, id_organismo, horas, horario, motivo, catacter_cargo, fecha_inicio_vac,fecha_fin_vac, fecha_inicio_insc,fecha_fin_insc)" .
-                "values (:id_mat, :id_org, :horas, :horario, :motivo, :catacter_cargo, :fecha_inicio_vac, :fecha_fin_vac, :fecha_inicio_insc, :fecha_fin_insc)";
+        $sql = "INSERT INTO convocatoria(id_materia, id_organismo, horas, horario, motivo, caracter_cargo, fecha_inicio_vac,fecha_fin_vac,estado)" .
+                "values (:id_mat, :id_org, :horas, :horario, :motivo, :caracter_cargo, :fecha_inicio_vac, :fecha_fin_vac, :estado)";
 
         try {
-            $campos_req = array($id_organismo, $id_materia, $horas, $horario,$motivo, $fecha_inicio_insc, $fecha_fin_insc, $fecha_inicio_vac);
+            $campos_req = array($id_organismo, $id_materia, $horas, $horario,$motivo, $fecha_inicio_vac);
             verificar_campos_vacios($campos_req);            
             
             $stmp = $con->prepare($sql);
@@ -47,8 +45,7 @@ switch ($ac) {
                 'caracter_cargo' => $caracter_cargo,
                 'fecha_inicio_vac'=>$fecha_inicio_vac,
                 'fecha_fin_vac' => $fecha_fin_vac,
-                'fecha_inicio_insc' => $fecha_inicio_insc,
-                'fecha_fin_insc' => $fecha_fin_insc));
+                'estado'=> true));
 
             echo "<script language='javascript'>";
             echo "window.location='../vistas/convocatorias.php?exito=1'";
@@ -92,7 +89,7 @@ function consultarOrganismo($id_organismo){
 	try {
         $conn = conex::con();
 		
-			$sql = $conn->prepare('SELECT organismo.nombre, nivel.descripcion FROM organismo, nivel 
+			$sql = $conn->prepare('SELECT organismo.nombre, nivel.descripcion , organismo.id FROM organismo, nivel 
 			 WHERE  organismo.id = :id AND 
 			 organismo.id_nivel = nivel.id');
 			$sql->execute(array('id'=>$id_organismo));
@@ -108,8 +105,9 @@ function obtenerConvotorias($estado, $id_organismo){
 	try {
         $conn = conex::con();
 		
-			$sql = $conn->prepare('SELECT convocatoria.id, materia.descripcion as mat, materia.id as id_mat, organismo.nombre as org, organismo.id as id_org, convocatoria.horas, convocatoria.caracter_cargo, convocatoria.horario, convocatoria.dias_duracion_lic, convocatoria.motivo, convocatoria.fecha_inicio_vac, convocatoria.fecha_fin_vac, convocatoria.fecha_inicio_ins, convocatoria.fecha_fin_ins FROM convocatoria, organismo, materia WHERE estado =:est AND organismo.id =:id_organismo
-				AND convocatoria.id_organismo = organismo.id AND convocatoria.id_materia = materia.id');
+			$sql = $conn->prepare('SELECT convocatoria.id, materia.descripcion as mat, materia.id as id_mat, organismo.nombre as org, organismo.id as id_org, convocatoria.horas, convocatoria.caracter_cargo, convocatoria.horario, convocatoria.dias_duracion_lic, convocatoria.motivo, convocatoria.fecha_inicio_vac, convocatoria.fecha_fin_vac, convocatoria.fecha_inicio_insc, convocatoria.fecha_fin_insc FROM convocatoria, organismo, materia WHERE estado =:est AND organismo.id =:id_organismo
+				AND convocatoria.id_organismo = organismo.id AND convocatoria.id_materia = materia.id
+                ORDER BY convocatoria.id desc');
 			$sql->execute(array('est'=>$estado, 'id_organismo' => $id_organismo));
 			
 			return $sql->fetchAll();

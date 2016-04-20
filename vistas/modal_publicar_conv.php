@@ -25,7 +25,20 @@
             <input class="form-control" type="text" id="fecha_publicacion" name="fecha_publicacion" value="<?php echo date('d/m/y');?>" disabled = "true">
             <span class="add-on"><i class="icon-th"></i></span>
           </div> 
-         
+         <div style="clear:both">
+           Fechas de Inscripcion
+         </div>
+          <div class="input-append date" id="fecha_pub" data-date-format="dd-mm-yyyy"style="float:left; margin-bottom: 30px;">
+            <input class="form-control" type="text" name="fecha_inicio_insc" placeholder="Inicio">
+            <span class="add-on"><i class="icon-th"></i></span>
+          </div> 
+
+
+          <div class="input-append date" id="fecha_pub" data-date-format="dd-mm-yyyy"style="float:left; margin-bottom: 30px;">
+            <input class="form-control" type="text" name="fecha_fin_insc" placeholder="Fin">
+            <span class="add-on"><i class="icon-th"></i></span>
+          </div> 
+
           <?php 
             $registros = obtenerOrdenMerito($id_org, $id_materia_sel);
             echo '<table id="lom" class="table table-striped table-bordered" cellspacing="0" width="100%">';

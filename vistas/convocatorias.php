@@ -88,7 +88,8 @@ $organismo = consultarOrganismo($usuarioorganismo);
                                                     Organismo                                                   
                                                 </td>
                                                 <td style="width:70%">
-                                                    <input type="hidden" name="id_organismo" value="<?php echo $organismo[0]['id'] ?>" />
+                                                    <input type="hidden" name="id_organismo" value="<?php echo 
+                                                    $organismo[0]['id'] ?>" />
                                                     <input class="form-control" type="text" name="id_org" id="id_org" disabled="true" value="<?php echo $organismo[0]['nombre'] .' - '. $organismo[0]['descripcion']?>" />
                                                 </td>
                                               
@@ -181,7 +182,7 @@ $organismo = consultarOrganismo($usuarioorganismo);
                                                     </div>  
                                                    
                                                     <div class="input-append date" id="fecha_fin_vac1" data-date-format="dd-mm-yyyy" style="float:left ; margin-top: 10px;" >
-                                                      <input class="form-control" type="text" placeholder="Fin" id="fecha_fin_vac">
+                                                      <input class="form-control" type="text" placeholder="Fin" id="fecha_fin_vac" name="fecha_fin_vac">
                                                       <span class="add-on"><i class="icon-th"></i></span>
                                                     </div>
                                                     </td>

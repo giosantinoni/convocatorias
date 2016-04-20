@@ -42,7 +42,7 @@ if($id_doc != -1 && $id_conv != -1){
         $inscripcion_success = inscribirDocente($id_doc, $id_conv);
     }
 
-    else
+    else 
         borrarInscripcionDocente($id_doc, $id_conv);
 }
 
@@ -107,10 +107,12 @@ function borrarInscripcionDocente($id_doc, $id_conv){
         </header>
 
         <?php 
-          if($id_materia_sel != -1 && $id_org != -1){ 
+            if($id_materia_sel != -1 && $id_org != -1){ 
                 include_once("modal_lom.php");
            } 
-           include_once("modal_publicar_conv.php");
+            if($id_conv != -1){ 
+                include_once("modal_publicar_conv.php");
+            }
          ?>
 
         <section>
@@ -131,7 +133,7 @@ function borrarInscripcionDocente($id_doc, $id_conv){
                     $registros = obtenerConvotorias(true, $usuarioorganismo);
 					
                     echo '<table id="convocatorias" class="table table-striped table-bordered" cellspacing="0" width="100%">';
-                    echo '<thead><tr><th>Id</th><th style="width:80px;">Materia</th><th>Caracter Cargo</th><th>Horas</th><th>Horario</th><th>Motivo</th><th>Inscripcion</th><th>Vacancia</th><th>Acciones</th></tr></thead>';					
+                    echo '<thead><tr><th>Id</th><th style="width:80px;">Materia</th><th>Caracter Cargo</th><th>Horas</th><th>Horario</th><th>Motivo</th><th>Vacancia</th><th>Inscripcion</th><th>Acciones</th></tr></thead>';					
                     
 						
 					echo "<tbody>";
@@ -157,13 +159,27 @@ function borrarInscripcionDocente($id_doc, $id_conv){
                         echo $reg['motivo'];
                         echo '</td>';						
 						echo '<td>';
-                        echo $reg['fecha_inicio_ins'] .' a '.$reg['fecha_fin_ins'];;
-                        echo '</td>';                  
-                        echo '<td>';
-                        echo $reg['fecha_inicio_vac'].' a '.$reg['fecha_fin_vac'];
+                        $date1 = new DateTime($reg['fecha_inicio_vac']);
+                        $date2 = new DateTime($reg['fecha_fin_vac']);
+                        echo $date1->format("d/m/Y").' a '.$date2->format("d/m/Y");
                         echo '</td>';
                         echo '<td>';
-                        echo '<form style="float:left" name="form1" method="post" action="convocatorias_abiertas.php">
+                         $date3 = new DateTime($reg['fecha_inicio_insc']);
+                        $date4 = new DateTime($reg['fecha_fin_insc']);
+                        echo $date3->format("d/m/Y").' a '.$date4->format("d/m/Y");
+                        echo '</td>'; 
+                        echo '<td>';
+                        echo '<form style="float:left" name="form2" method="post" action="convocatorias_abiertas.php">
+                                
+                                <acronym title="Publicar Convocatoria">
+                                <input id="id_conv" name="id_conv" type="hidden" value="' . $reg['id'] . '" />
+                                <button type="submit" class="btn btn-default" data-toggle="modal" data-target="#public_conv">
+                                <span class="glyphicon glyphicon-envelope" aria-hidden="true">
+                                </button>
+                                </acronym>                                
+                                </form>
+
+                                <form style="float:left" name="form1" method="post" action="convocatorias_abiertas.php">
                                 <input id="id_materia_sel" name="id_materia_sel" type="hidden" value="' . $reg['id_mat'] . '" />
                                 <input id="id_org" name="id_org" type="hidden" value="' . $reg['id_org'] . '" />
                                 <input id="id_conv" name="id_conv" type="hidden" value="' . $reg['id'] . '" />
@@ -174,14 +190,18 @@ function borrarInscripcionDocente($id_doc, $id_conv){
                                 </acronym>                                
                                 </form>
 
-                                <form style="float:left" name="form2" method="post" action="convocatorias_abiertas.php">
-                                
-                                <acronym title="Publicar Convocatoria">
-                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#public_conv">
+                                <form style="float:left" name="form1" method="post" action="convocatorias_abiertas.php">
+                                <input id="id_materia_sel" name="id_materia_sel" type="hidden" value="' . $reg['id_mat'] . '" />
+                                <input id="id_org" name="id_org" type="hidden" value="' . $reg['id_org'] . '" />
+                                <input id="id_conv" name="id_conv" type="hidden" value="' . $reg['id'] . '" />
+                                <acronym title="Ver Orden de Mérito">
+                                <button type="submit" class="btn btn-default">
                                 <span class="glyphicon glyphicon-send" aria-hidden="true">
                                 </button>
                                 </acronym>                                
-                                </form>';
+                                </form>'
+
+                                ;
 
                         echo '</td>';               
                         echo '</tr>';
@@ -206,12 +226,19 @@ function borrarInscripcionDocente($id_doc, $id_conv){
                     </html>
                     <script>
 
-                            $('#convocatorias').DataTable();
+                            $(document).ready(function() {
+                                $('#convocatorias').DataTable( {
+                                    "order": [[ 0, "desc" ]]
+                                } );
+                            } );
                       
                             $('#lom').DataTable();
                        
 
                      $('#myModal').modal({
+                            show: 'true'
+                        }); 
+                     $('#public_conv').modal({
                             show: 'true'
                         }); 
 
