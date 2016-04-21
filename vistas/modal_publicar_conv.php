@@ -1,3 +1,4 @@
+<style>.datepicker { z-index: 1151 !important;  }</style>
 <div class="modal fade" id="public_conv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style ="font-family:'Roboto', sans-serif;">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -6,69 +7,53 @@
           <span aria-hidden="true">&times;</span>
         </button>
         <h4 class="modal-title" id="myModalLabel">Publicar Convocatoria</h4>
-        Se enviará un e-mail a los siguientes docentes
       </div>
       <div class="modal-body">
-      <?php 
-            if($inscripcion_success){ 
-        ?>  
-      <div class="alert alert-success" id="sucessinscripcion" style="width:90%; font-family:'Roboto', sans-serif; font-weight:300">
-          <span>
-            <Strong>Docente inscripto.</Strong>
-          </span>
-        </div>
-        <?php }?>
         <div style="width:90%; font-family:'Roboto', sans-serif; font-weight:400">
-          
-          <div class="input-append date" id="fecha_pub" data-date-format="dd-mm-yyyy"style="float:left; margin-bottom: 30px;">
-           <label style="margin-bottom: 5px;">Fecha de Publicacion </label>
-            <input class="form-control" type="text" id="fecha_publicacion" name="fecha_publicacion" value="<?php echo date('d/m/y');?>" disabled = "true">
+          <form style="float:left" name="guardarFechas" method="post" action="convocatorias_abiertas.php">
+
+           <div style="clear:both">
+             <label>Fechas de Inscripcion</label>
+           </div>
+           <div class="input-append date" data-date-format="dd-mm-yyyy"style="float:left; margin-bottom: 15px;" id="fecha_inicio_insc">
+            <input class="form-control" type="text" name="fecha_inicio_insc" placeholder="Inicio"  onChange="this.form.submit()">
             <span class="add-on"><i class="icon-th"></i></span>
           </div> 
-         <div style="clear:both">
-           Fechas de Inscripcion
+          <div class="input-append date" data-date-format="dd-mm-yyyy"style="float:left; margin-bottom: 15px; margin-left: 10px;" id="fecha_fin_insc">
+            <input class="form-control" type="text" name="fecha_fin_insc" placeholder="Fin"  onChange="this.form.submit()">
+            <span class="add-on"><i class="icon-th"></i></span>
+          </div> 
+        </form>
+        <form name="publicar" method="post" action="../tcpdf/reportes/reporte_transparente.php">
+
+          <div style="clear:both">
+           <label>Lugar de Inscripción</label>
+           <input name="lugar_insc"  value="" class="form-control" />
          </div>
-          <div class="input-append date" id="fecha_pub" data-date-format="dd-mm-yyyy"style="float:left; margin-bottom: 30px;">
-            <input class="form-control" type="text" name="fecha_inicio_insc" placeholder="Inicio">
-            <span class="add-on"><i class="icon-th"></i></span>
-          </div> 
+         <div style="clear:both">
+           <label>Horarios de Inscripcion</label>
+           <input name="horario_insc"  value="" class="form-control" />
+         </div>
 
+         <input type="hidden" name="fecha_publicacion" value="<?php echo date('d/m/y');?>">
+         <input id="nro_conv" type="hidden" name="nro_conv"value="<?php echo $convocatoria['id'] ?>" />
+         <input id="inst" type="hidden" name="inst" value="<?php echo $organismo[0]['nombre']?> - <?php echo $organismo[0]['descripcion'] ?>"/>
+         <input name="caracter_cargo" type="hidden" value="<?php echo $convocatoria['caracter_cargo']?>"/>
+         <input name="area_curr"  type="hidden" value="<?php echo consultarMateria($convocatoria['id_materia']) ?>"/>
+         <input name="cant_horas" type="hidden"  value="<?php echo $convocatoria['horas'] ?>"/>
+         <input name="horarios" type="hidden" value="<?php echo $convocatoria['horario'] ?>"/>
+         <input name="motivo" type="hidden" value="<?php echo $convocatoria['motivo'] ?>"/>
 
-          <div class="input-append date" id="fecha_pub" data-date-format="dd-mm-yyyy"style="float:left; margin-bottom: 30px;">
-            <input class="form-control" type="text" name="fecha_fin_insc" placeholder="Fin">
-            <span class="add-on"><i class="icon-th"></i></span>
-          </div> 
-
-          <?php 
-            $registros = obtenerOrdenMerito($id_org, $id_materia_sel);
-            echo '<table id="lom" class="table table-striped table-bordered" cellspacing="0" width="100%">';
-            echo '<thead><tr><th>Orden</th><th>Docente</th><th>e-mail</th></thead>';                  
-            echo "<tbody>";
-            $i=1;
-            foreach ($registros as $reg) {                        
-                echo '<tr>';
-                echo '<td>';
-                echo $i . '&deg';
-                echo '</td>';
-                echo '<td>';
-                echo $reg['apellido'].', '.$reg['nombre'];
-                echo '</td>';
-                echo '<td>';
-                echo $reg['email'];
-                echo '</td>';
-               
-                echo '</tr>';
-                
-            $i++;
-            }
-            echo "</tbody>";
-            echo '</table>';
-          ?>
-          </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+         <input name="fecha_insc" type="hidden"   value="Desde <?php echo $convocatoria['fecha_inicio_insc'] ?> hasta <?php echo $convocatoria['fecha_inicio_insc'] ?>" />
+         <div class="modal-footer" style="clear: both;">
+          <button type="submit" class="btn btn-primary" >Publicar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+        </form>
       </div>
     </div>
   </div>
 </div>
+</div>
+
+

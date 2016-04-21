@@ -10,6 +10,13 @@ include_once '../controlador/conex.php';
 
 $organismo = consultarOrganismo($usuarioorganismo);
 
+
+
+/*if(isset($_POST['fecha_fin_insc'])){
+    actualizarFinInscripcion($_POST['fecha_fin_insc']);
+}*/
+
+
 $id_materia_sel = -1;
 if(isset($_POST['id_materia_sel'])){
     $id_materia_sel = $_POST['id_materia_sel'];
@@ -23,6 +30,7 @@ if(isset($_POST['id_org'])){
 $id_conv = -1;
 if(isset($_POST['id_conv'])){
     $id_conv = $_POST['id_conv'];
+    $convocatoria = obtenerConvocatoria($id_conv);
 }
 
 $id_doc = -1;
@@ -35,6 +43,11 @@ if(isset($_POST['checked'])){
     $doc_checked = $_POST['checked'];
 }
 $inscripcion_success=false;
+
+/*
+if(isset($_POST['fecha_inicio_insc'])){
+    actualizarInicioInscripcion($_POST['fecha_inicio_insc'], $id_conv);
+}*/
 
 //Aqui efectuamos la inscripcion del docente a la convocatoria. Es decir se asienta la firma
 if($id_doc != -1 && $id_conv != -1){
@@ -56,7 +69,7 @@ function inscribirDocente($id_doc, $id_conv){
             date_default_timezone_set('America/Argentina/Buenos_Aires');
             $hoy = date('Y-m-d H:i:s');
             $execute = $stmp->execute(array('id_doc' => $id_doc, 'id_conv' => $id_conv, 'fecha_insc' => $hoy));
-            $con = null;  
+           
             return true;          
         } catch (Exception $e) {
             echo "ERROR: " . $e->getMessage();            
@@ -71,11 +84,26 @@ function borrarInscripcionDocente($id_doc, $id_conv){
             $con = conex::con();           
             $stmp = $con->prepare($sql);
             $stmp->execute(array('id_doc'=>$id_doc, 'id_conv' => $id_conv));            
-            $con = null;            
+                     
         } catch (Exception $e) {
             echo "ERROR: " . $e->getMessage();            
         }
 }
+
+
+/*function actualizarInicioInscripcion($fecha_inicio_insc, $id_conv){
+
+     $sql = "UPDATE convocatoria set fecha_inicio_insc =:fecha_ini WHERE id= :id
+                       ";
+        try { 
+            $con = conex::con();           
+            $stmp = $con->prepare($sql);
+            $stmp->execute(array('fecha_ini'=>$fecha_inicio_insc, 'id' => $id_conv));            
+                       
+        } catch (Exception $e) {
+            echo "ERROR: " . $e->getMessage();            
+        }
+}*/
 
 ?>	
 
@@ -91,11 +119,12 @@ function borrarInscripcionDocente($id_doc, $id_conv){
        
 		<link href="css/bootstrap.min.css" type="text/css" rel="stylesheet" /> 
         
-        <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.min.css">       
+        <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.min.css">
+        <link href="css/datepicker.css" rel="stylesheet">       
         <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/bootstrap-select.min.js"></script> 
-        
+        <script src="js/bootstrap-datepicker.js"></script>   
         <script type="text/javascript" language="javascript" src="js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" language="javascript" src="js/dataTables.bootstrap.min.js"></script>
 		
@@ -110,7 +139,7 @@ function borrarInscripcionDocente($id_doc, $id_conv){
             if($id_materia_sel != -1 && $id_org != -1){ 
                 include_once("modal_lom.php");
            } 
-            if($id_conv != -1){ 
+            if($id_conv != -1 && $id_materia_sel == -1){ 
                 include_once("modal_publicar_conv.php");
             }
          ?>
@@ -160,13 +189,19 @@ function borrarInscripcionDocente($id_doc, $id_conv){
                         echo '</td>';						
 						echo '<td>';
                         $date1 = new DateTime($reg['fecha_inicio_vac']);
-                        $date2 = new DateTime($reg['fecha_fin_vac']);
-                        echo $date1->format("d/m/Y").' a '.$date2->format("d/m/Y");
+                        echo $date1->format("d/m/Y");
+                        if($reg['fecha_fin_vac']!=''){
+                            $date2 = new DateTime($reg['fecha_fin_vac']);
+                            echo ' a '.$date2->format("d/m/Y");
+                        }
+                        
                         echo '</td>';
                         echo '<td>';
-                         $date3 = new DateTime($reg['fecha_inicio_insc']);
-                        $date4 = new DateTime($reg['fecha_fin_insc']);
-                        echo $date3->format("d/m/Y").' a '.$date4->format("d/m/Y");
+                        if($reg['fecha_inicio_insc']!= '' && $ref['fecha_fin_insc']){
+                            $date3 = new DateTime($reg['fecha_inicio_insc']);
+                            $date4 = new DateTime($reg['fecha_fin_insc']);
+                            echo $date3->format("d/m/Y").' a '.$date4->format("d/m/Y");
+                        }
                         echo '</td>'; 
                         echo '<td>';
                         echo '<form style="float:left" name="form2" method="post" action="convocatorias_abiertas.php">
@@ -242,6 +277,8 @@ function borrarInscripcionDocente($id_doc, $id_conv){
                             show: 'true'
                         }); 
 
-                        
+  
+  $('#fecha_inicio_insc').datepicker();
+  $('#fecha_fin_insc').datepicker();                      
                     </script>
 

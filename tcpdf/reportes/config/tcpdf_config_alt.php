@@ -99,22 +99,22 @@ define ('PDF_PAGE_ORIENTATION', 'P');
 /**
  * Document creator.
  */
-define ('PDF_CREATOR', 'TURISMO CATAMARCA');
+define ('PDF_CREATOR', 'UNIVERSIDAD NACIONAL DE CATAMARCA');
 
 /**
  * Document author.
  */
-define ('PDF_AUTHOR', 'TURISMO CATAMARCA');
+define ('PDF_AUTHOR', 'UNIVERSIDAD NACIONAL DE CATAMARCA');
 
 /**
  * Header title.
  */
-define ('PDF_HEADER_TITLE', 'TURISMO CATAMARCA INFORMES');
+define ('PDF_HEADER_TITLE', 'UNIVERSIDAD NACIONAL DE CATAMARCA');
 
 /**
  * Header description string.
  */
-define ('PDF_HEADER_STRING', "turismocat.com.ar");
+define ('PDF_HEADER_STRING', "Sistema de Convocatorias Docente");
 
 /**
  * Document unit of measure [pt=point, mm=millimeter, cm=centimeter, in=inch].

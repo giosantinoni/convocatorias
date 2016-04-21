@@ -117,6 +117,21 @@ function obtenerConvotorias($estado, $id_organismo){
     }
 }
 
+function obtenerConvocatoria($id_convocatoria){
+    try {
+        $conn = conex::con();
+        
+            $sql = $conn->prepare('SELECT * from convocatoria where id =:id');
+            $sql->execute(array('id'=>$id_convocatoria));
+            
+            return $sql->fetch();
+            
+        
+    } catch (PDOException $e){
+        echo "ERROR: " . $e->getMessage();
+    }
+}
+
 function obtenerOrdenMerito($id_organismo, $id_materia){
 	try {
         $conn = conex::con();
@@ -157,6 +172,24 @@ function consultarDocenteInscripto($id_doc, $id_conv){
     }
 }
 
+function consultarMateria($id_materia){
+
+  try {
+        $conn = conex::con();
+    
+      $sql = $conn->prepare('SELECT materia.descripcion FROM materia
+       WHERE  materia.id= :id');
+      $sql->execute(array('id'=>$id_materia));
+       
+      $resultado = $sql->fetchAll();
+      $materia = $resultado[0]['descripcion'];
+      return $materia;
+
+    
+    } catch (PDOException $e){
+        echo "ERROR: " . $e->getMessage();
+    }
+}
 
 /*function inscribirDocente($id_doc, $id_conv){
 
