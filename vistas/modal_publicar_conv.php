@@ -11,16 +11,18 @@
       <div class="modal-body">
         <div style="width:90%; font-family:'Roboto', sans-serif; font-weight:400">
           <form style="float:left" name="guardarFechas" method="post" action="convocatorias_abiertas.php">
-
+            <input id="nro_conv" type="hidden" name="id_conv"value="<?php echo $convocatoria['id'] ?>" />
            <div style="clear:both">
              <label>Fechas de Inscripcion</label>
            </div>
            <div class="input-append date" data-date-format="dd-mm-yyyy"style="float:left; margin-bottom: 15px;" id="fecha_inicio_insc">
-            <input class="form-control" type="text" name="fecha_inicio_insc" placeholder="Inicio"  onChange="this.form.submit()">
+            <input class="form-control" type="text" name="fecha_inicio_insc" placeholder="Inicio"  onChange="this.form.submit()" value="<?php  $date1 = new DateTime( $convocatoria['fecha_inicio_insc'] );
+                        echo $date1->format("d/m/Y"); ?>">
             <span class="add-on"><i class="icon-th"></i></span>
           </div> 
           <div class="input-append date" data-date-format="dd-mm-yyyy"style="float:left; margin-bottom: 15px; margin-left: 10px;" id="fecha_fin_insc">
-            <input class="form-control" type="text" name="fecha_fin_insc" placeholder="Fin"  onChange="this.form.submit()">
+            <input class="form-control" type="text" name="fecha_fin_insc" placeholder="Fin"  onChange="this.form.submit()" value="<?php  $date1 = new DateTime( $convocatoria['fecha_fin_insc'] );
+                        echo $date1->format("d/m/Y"); ?>">
             <span class="add-on"><i class="icon-th"></i></span>
           </div> 
         </form>

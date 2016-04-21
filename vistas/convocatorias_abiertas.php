@@ -12,11 +12,6 @@ $organismo = consultarOrganismo($usuarioorganismo);
 
 
 
-/*if(isset($_POST['fecha_fin_insc'])){
-    actualizarFinInscripcion($_POST['fecha_fin_insc']);
-}*/
-
-
 $id_materia_sel = -1;
 if(isset($_POST['id_materia_sel'])){
     $id_materia_sel = $_POST['id_materia_sel'];
@@ -44,10 +39,19 @@ if(isset($_POST['checked'])){
 }
 $inscripcion_success=false;
 
-/*
+
 if(isset($_POST['fecha_inicio_insc'])){
-    actualizarInicioInscripcion($_POST['fecha_inicio_insc'], $id_conv);
-}*/
+    $fecha = date('Y-m-d',strtotime($_POST['fecha_inicio_insc']));
+    actualizarInicioInscripcion($fecha , $id_conv);
+}
+
+
+
+if(isset($_POST['fecha_fin_insc'])){
+     $fecha = date('Y-m-d',strtotime($_POST['fecha_fin_insc']));
+    actualizarFinInscripcion($fecha, $id_conv);
+}
+
 
 //Aqui efectuamos la inscripcion del docente a la convocatoria. Es decir se asienta la firma
 if($id_doc != -1 && $id_conv != -1){
@@ -91,19 +95,39 @@ function borrarInscripcionDocente($id_doc, $id_conv){
 }
 
 
-/*function actualizarInicioInscripcion($fecha_inicio_insc, $id_conv){
+function actualizarInicioInscripcion($fecha, $id_conv){
 
      $sql = "UPDATE convocatoria set fecha_inicio_insc =:fecha_ini WHERE id= :id
                        ";
+                  
+
         try { 
             $con = conex::con();           
             $stmp = $con->prepare($sql);
-            $stmp->execute(array('fecha_ini'=>$fecha_inicio_insc, 'id' => $id_conv));            
+
+            $stmp->execute(array('fecha_ini'=>$fecha, 'id' => $id_conv));            
                        
         } catch (Exception $e) {
             echo "ERROR: " . $e->getMessage();            
         }
-}*/
+}
+
+function actualizarFinInscripcion($fecha, $id_conv){
+
+     $sql = "UPDATE convocatoria set fecha_fin_insc =:fecha_fin WHERE id= :id
+                       ";
+                  
+
+        try { 
+            $con = conex::con();           
+            $stmp = $con->prepare($sql);
+
+            $stmp->execute(array('fecha_fin'=>$fecha, 'id' => $id_conv));            
+                       
+        } catch (Exception $e) {
+            echo "ERROR: " . $e->getMessage();            
+        }
+}
 
 ?>	
 
@@ -197,7 +221,8 @@ function borrarInscripcionDocente($id_doc, $id_conv){
                         
                         echo '</td>';
                         echo '<td>';
-                        if($reg['fecha_inicio_insc']!= '' && $ref['fecha_fin_insc']){
+
+                        if(!empty($reg['fecha_inicio_insc']) && !empty($reg['fecha_fin_insc'])){
                             $date3 = new DateTime($reg['fecha_inicio_insc']);
                             $date4 = new DateTime($reg['fecha_fin_insc']);
                             echo $date3->format("d/m/Y").' a '.$date4->format("d/m/Y");
