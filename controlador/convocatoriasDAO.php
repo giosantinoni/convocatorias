@@ -191,6 +191,28 @@ function consultarMateria($id_materia){
     }
 }
 
+function obtenerResultadoConvocatoria($id_organismo, $id_materia, $id_convocatoria){
+	try {
+        $conn = conex::con();
+		
+			$sql = $conn->prepare('SELECT docente.id as id_doc, docente.nombre, docente.apellido, docente.dni, docente.email, lom.puntaje, convocatoria_docente.fecha_insc 
+						from docente, lom, convocatoria_docente
+						where docente.id = lom.id_docente
+						and lom.id_materia =:id_materia
+						and lom.id_nivel = (select organismo.id_nivel from organismo where
+						organismo.id = :id_organismo)						
+						and convocatoria_docente.id_convocatoria = :id_convocatoria
+						and docente.id = convocatoria_docente.id_docente
+						order by lom.puntaje desc');
+			$sql->execute(array('id_materia'=>$id_materia, 'id_organismo' => $id_organismo, 'id_convocatoria'=>$id_convocatoria));
+			
+			return $sql->fetchAll();
+		
+    } catch (PDOException $e){
+        echo "ERROR: " . $e->getMessage();
+    }
+}
+
 /*function inscribirDocente($id_doc, $id_conv){
 
 	$sql = "INSERT INTO convocatoria_docente(id_docente, id_convocatoria, fecha_insc)" .
