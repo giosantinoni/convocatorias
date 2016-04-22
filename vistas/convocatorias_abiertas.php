@@ -33,6 +33,11 @@ if(isset($_POST['id_doc'])){
     $id_doc = $_POST['id_doc'];
 }
 
+$ver_resul_prov = -1;
+if(isset($_POST['ver_resul_prov'])){
+    $ver_resul_prov = $_POST['ver_resul_prov'];
+}
+
 $doc_checked = "";
 if(isset($_POST['checked'])){
     $doc_checked = $_POST['checked'];
@@ -160,12 +165,16 @@ function actualizarFinInscripcion($fecha, $id_conv){
         </header>
 
         <?php 
-            if($id_materia_sel != -1 && $id_org != -1){ 
-                include_once("modal_lom.php");
-           } 
-            if($id_conv != -1 && $id_materia_sel == -1){ 
-                include_once("modal_publicar_conv.php");
-            }
+            	if($id_materia_sel != -1 && $id_org != -1 && $ver_resul_prov == -1){ 
+            	include_once("modal_lom.php");
+	        } 
+	        if($id_conv != -1 && $id_materia_sel == -1 && $ver_resul_prov == -1){ 
+	            include_once("modal_publicar_conv.php");
+	        }
+	
+	        if($id_conv != -1 && $id_materia_sel != -1 && $id_org != -1 && $ver_resul_prov == 1){ 
+	            include_once("modal_resultado_prov.php");
+	        }
          ?>
 
         <section>
@@ -254,11 +263,12 @@ function actualizarFinInscripcion($fecha, $id_conv){
                                 <input id="id_materia_sel" name="id_materia_sel" type="hidden" value="' . $reg['id_mat'] . '" />
                                 <input id="id_org" name="id_org" type="hidden" value="' . $reg['id_org'] . '" />
                                 <input id="id_conv" name="id_conv" type="hidden" value="' . $reg['id'] . '" />
-                                <acronym title="Ver Orden de Mérito">
-                                <button type="submit" class="btn btn-default">
-                                <span class="glyphicon glyphicon-send" aria-hidden="true">
-                                </button>
-                                </acronym>                                
+                                <input id="ver_resul_prov" name="ver_resul_prov" type="hidden" value="1" /> 
+                                <acronym title="Ver Resultados Provisorios">
+                                    <button type="submit" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-send" aria-hidden="true">
+                                        </button>
+                                    </acronym>                                
                                 </form>'
 
                                 ;
@@ -293,6 +303,7 @@ function actualizarFinInscripcion($fecha, $id_conv){
                             } );
                       
                             $('#lom').DataTable();
+                             $('#lom2').DataTable();
                        
 
                      $('#myModal').modal({
@@ -301,6 +312,9 @@ function actualizarFinInscripcion($fecha, $id_conv){
                      $('#public_conv').modal({
                             show: 'true'
                         }); 
+                      $('#myModalResultadoProv').modal({
+                       show: 'true'
+                        });   
 
   
   $('#fecha_inicio_insc').datepicker();
