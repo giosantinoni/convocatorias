@@ -17,7 +17,7 @@ switch ($ac) {
                 isset($_POST["horas"]) && isset($_POST["horario"]) && isset($_POST["motivo"]) ) {
             
         
-		
+		$identificador = -1;
         $id_organismo = $_POST["id_organismo"];
         $id_materia = $_POST["materia"];
         $horas = $_POST["horas"];
@@ -26,12 +26,19 @@ switch ($ac) {
         $caracter_cargo = $_POST["caracter"];  
         $fecha_inicio_vac = $_POST["fecha_inicio_vac"];
         $fecha_fin_vac = $_POST["fecha_fin_vac"];
-       
         
-		
+        $sql = "SELECT identificador from convocatoria where id_organismo=:id_org order by identificador";
+        $stmp = $con->prepare($sql);
+        $stmp->execute(array('id_org' => $id_organismo));
+		$resultado = $stmp->fetch();
+        if($resultado!=null){
+            $identificador = $resultado['identificador'] + 1;
+        }else{
+            $identificador = 1;
+        }
 
-        $sql = "INSERT INTO convocatoria(id_materia, id_organismo, horas, horario, motivo, caracter_cargo, fecha_inicio_vac,fecha_fin_vac,estado)" .
-                "values (:id_mat, :id_org, :horas, :horario, :motivo, :caracter_cargo, :fecha_inicio_vac, :fecha_fin_vac, :estado)";
+        $sql = "INSERT INTO convocatoria(id_materia, id_organismo, horas, horario, motivo, caracter_cargo, fecha_inicio_vac,fecha_fin_vac,estado,identificador)" .
+                "values (:id_mat, :id_org, :horas, :horario, :motivo, :caracter_cargo, :fecha_inicio_vac, :fecha_fin_vac, :estado, :identificador)";
 
         try {
             $campos_req = array($id_organismo, $id_materia, $horas, $horario,$motivo, $fecha_inicio_vac);
@@ -45,7 +52,8 @@ switch ($ac) {
                 'caracter_cargo' => $caracter_cargo,
                 'fecha_inicio_vac'=>$fecha_inicio_vac,
                 'fecha_fin_vac' => $fecha_fin_vac,
-                'estado'=> true));
+                'estado'=> true,
+                'identificador'=> $identificador));
 
             echo "<script language='javascript'>";
             echo "window.location='../vistas/convocatorias.php?exito=1'";
@@ -105,7 +113,7 @@ function obtenerConvotorias($estado, $id_organismo){
 	try {
         $conn = conex::con();
 		
-			$sql = $conn->prepare('SELECT convocatoria.id, materia.descripcion as mat, materia.id as id_mat, organismo.nombre as org, organismo.id as id_org, convocatoria.horas, convocatoria.caracter_cargo, convocatoria.horario, convocatoria.dias_duracion_lic, convocatoria.motivo, convocatoria.fecha_inicio_vac, convocatoria.fecha_fin_vac, convocatoria.fecha_inicio_insc, convocatoria.fecha_fin_insc FROM convocatoria, organismo, materia WHERE estado =:est AND organismo.id =:id_organismo
+			$sql = $conn->prepare('SELECT convocatoria.id, convocatoria.identificador, materia.descripcion as mat, materia.id as id_mat, organismo.nombre as org, organismo.id as id_org, convocatoria.horas, convocatoria.caracter_cargo, convocatoria.horario, convocatoria.dias_duracion_lic, convocatoria.motivo, convocatoria.fecha_inicio_vac, convocatoria.fecha_fin_vac, convocatoria.fecha_inicio_insc, convocatoria.fecha_fin_insc FROM convocatoria, organismo, materia WHERE estado =:est AND organismo.id =:id_organismo
 				AND convocatoria.id_organismo = organismo.id AND convocatoria.id_materia = materia.id
                 ORDER BY convocatoria.id desc');
 			$sql->execute(array('est'=>$estado, 'id_organismo' => $id_organismo));

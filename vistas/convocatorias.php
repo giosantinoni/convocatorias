@@ -27,6 +27,8 @@ if(isset($_GET['exito'])){
 
 $materias = consultarMateriasPorEscuela($usuarioorganismo);
 $organismo = consultarOrganismo($usuarioorganismo);
+
+
 ?>	
 
 
@@ -95,7 +97,7 @@ $organismo = consultarOrganismo($usuarioorganismo);
 
                     </tr>
                     <tr>
-                        <td style="width:25%">
+                        <td style="width:25%; margin-top: 5px">
                             Materia                                                   
                         </td>
                         <td style="width:70%">
@@ -116,7 +118,7 @@ $organismo = consultarOrganismo($usuarioorganismo);
 
                             </tr>
                             <tr>
-                                <td style="width:25%">
+                                <td style="width:25%; margin-top: 5px">
                                     Caracter del Cargo *                                                  
                                 </td>
                                 <td style="width:0%">                                                  
@@ -132,39 +134,39 @@ $organismo = consultarOrganismo($usuarioorganismo);
 
                             </tr>
                             <tr>
-                                <td style="width:25%">
-                                    Cantidad de horas *                                                  
+                                <td style="width:25%; margin-top: 5px">
+                                    Horas Semanales *                                                  
                                 </td>
-                                <td style="width:0%">                                                  
+                                <td style="width:0%; margin-top: 5px">                                                  
                                     <input class="form-control" type="text" name="horas" id="horas"  />
                                 </td>
 
                             </tr>
                             <tr>
-                                <td style="width:25%">
+                                <td style="width:25%; margin-top: 5px">
                                     Horario *                                                 
                                 </td>
-                                <td style="width:70%">
+                                <td style="width:70%; margin-top: 5px">
                                     <input class="form-control" type="text" name="horario" id="horario"  />
                                 </td>
 
                             </tr>
 
                             <tr>
-                                <td style="width:25%">
+                                <td style="width:25%; margin-top: 5px">
                                     Dias de Licencia                                   
                                 </td>
-                                <td style="width:70%">
+                                <td style="width:70%; margin-top: 5px">
                                    <input class="form-control" type="text"  name="dias" id="dias" placeholder="Un valor vacio significa que la duracion es indeterminada." />
                                </td>
 
                                <tr>
 
                                    <tr>
-                                    <td style="width:25%">
+                                    <td style="width:25%; margin-top: 5px">
                                         Motivo de la Vacancia *                                                
                                     </td>
-                                    <td style="width:70%">
+                                    <td style="width:70%; margin-top: 5px">
                                        <input class="form-control" type="text"  name="motivo" id="motivo"  />
                                    </td>
 
@@ -187,25 +189,6 @@ $organismo = consultarOrganismo($usuarioorganismo);
                                   </div>
                               </td>
                           </tr>
-
-                          <tr>                                            
-                            <td>
-                                Inscripción
-                            </td>
-
-                            <td style="width:25%">
-                                <div class="input-append date" id="fecha_inicio_insc" data-date-format="dd-mm-yyyy" style="float:left; margin-right:20px; margin-top: 10px; ">
-                                  <input class="form-control" type="text" placeholder="Inicio">
-                                  <span class="add-on"><i class="icon-th"></i></span>
-                              </div>  
-
-                              <div class="input-append date" id="fecha_fin_insc" data-date-format="dd-mm-yyyy" style="float:left; margin-right:20px; margin-top: 10px; ">
-                                  <input class="form-control" type="text" placeholder="Fin">
-                                  <span class="add-on"><i class="icon-th"></i></span>
-                              </div>  
-                          </td>
-                      </tr>  
-
                   </table>
                   <div style="text-align: center">
                     <button type="submit" class="btn btn-default" style="background:#efefee; color:#777; margin-top: 20px;" 
