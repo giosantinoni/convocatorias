@@ -8,8 +8,9 @@ if (isset($_SESSION["s_usuario"])) {
 
 <html>
     <head>
-		<link href='https://fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
-        <title>Sistema de Gestión Convocatorias docente</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href='https://fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
+        <title>Sistema de Gesti&oacute;n Convocatorias Docente</title>
         <link rel="stylesheet" href="slide/css/style.css" type="text/css" media="screen"/>        
         <script type="text/javascript" src="slide/sliding.form.js"></script>
         <style>

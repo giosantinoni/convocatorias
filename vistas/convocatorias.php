@@ -147,7 +147,7 @@ $organismo = consultarOrganismo($usuarioorganismo);
                                     Horario *                                                 
                                 </td>
                                 <td style="width:70%; margin-top: 5px">
-                                    <input class="form-control" type="text" name="horario" id="horario"  />
+                                    <input class="form-control" type="text" name="horario" id="horario" placeholder="Ej: Lun 9:00 a 10:30, Mar 11:00 a 12:30" />
                                 </td>
 
                             </tr>
@@ -167,7 +167,7 @@ $organismo = consultarOrganismo($usuarioorganismo);
                                         Motivo de la Vacancia *                                                
                                     </td>
                                     <td style="width:70%; margin-top: 5px">
-                                       <input class="form-control" type="text"  name="motivo" id="motivo"  />
+                                       <input class="form-control" type="text"  name="motivo" id="motivo" placeholder="Ej: Licencia por largo tratamiento"  />
                                    </td>
 
                                </tr>

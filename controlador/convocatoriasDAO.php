@@ -27,7 +27,7 @@ switch ($ac) {
         $fecha_inicio_vac = $_POST["fecha_inicio_vac"];
         $fecha_fin_vac = $_POST["fecha_fin_vac"];
         
-        $sql = "SELECT identificador from convocatoria where id_organismo=:id_org order by identificador";
+        $sql = "SELECT identificador from convocatoria where id_organismo=:id_org order by identificador desc";
         $stmp = $con->prepare($sql);
         $stmp->execute(array('id_org' => $id_organismo));
 		$resultado = $stmp->fetch();

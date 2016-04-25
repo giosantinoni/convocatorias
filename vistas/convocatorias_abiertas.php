@@ -213,7 +213,7 @@ function actualizarFechaPublicacion($fecha, $id_conv){
             $registros = obtenerConvotorias(true, $usuarioorganismo);
 
             echo '<table id="convocatorias" class="table table-striped table-bordered" cellspacing="0" width="100%">';
-            echo '<thead><tr><th>Id</th><th style="width:80px;">Materia</th><th>Caracter Cargo</th><th>Horas</th><th>Horario</th><th>Motivo</th><th>Vacancia</th><th>Inscripcion</th><th>Acciones</th></tr></thead>';					
+            echo '<thead><tr><th>Id</th><th style="width:80px;">Materia</th><th>Caracter Cargo</th><th>Horas</th><th>Horario</th><th>Motivo</th><th>Vacancia</th><th>Inscripcion</th><th  style="width:100px;">Acciones</th></tr></thead>';					
 
 
             echo "<tbody>";
@@ -249,7 +249,7 @@ function actualizarFechaPublicacion($fecha, $id_conv){
                 echo '</td>';
                 echo '<td>';
 
-                if(!empty($reg['fecha_inicio_insc']) && !empty($reg['fecha_fin_insc'])){
+                if($reg['fecha_inicio_insc']!='' && $reg['fecha_fin_insc']!=''){
                     $date3 = new DateTime($reg['fecha_inicio_insc']);
                     $date4 = new DateTime($reg['fecha_fin_insc']);
                     echo $date3->format("d/m/Y").' a '.$date4->format("d/m/Y");
